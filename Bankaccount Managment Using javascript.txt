@@ -1,0 +1,65 @@
+// Construct function for BankAccount
+function BankAccount(Ac_No, Name, Type, Balance) {
+    this.Ac_No = Ac_No;
+    this.Name = Name;
+    this.Type = Type;
+    this.Balance = Balance;
+    this.Active = true; // Initialize account as active by default
+}
+
+// Method Add to Bankaccount Prototype
+BankAccount.prototype.deposit = function (amount) {
+    if (amount > 0) {
+        this.Balance += amount;
+        console.log(`Deposited $${amount}. New Balance: $${this.Balance}`);
+    } else {
+        console.log("Invalid deposit amount.");
+    }
+};
+
+BankAccount.prototype.withdrawal = function (amount) {
+    if (this.Active && amount > 0 && amount <= this.Balance) {
+        this.Balance -= amount;
+        console.log(`Withdrawn $${amount}. New Balance: $${this.Balance}`);
+    } else {
+        console.log("Invalid Withdrawal amount or Insufficient funds.");
+    }
+};
+
+BankAccount.prototype.checkBalance = function () {
+    console.log(`Account Balance: $${this.Balance}`);
+};
+
+BankAccount.prototype.isActive = function () {
+    return this.Active;
+};
+
+// function to Calculate total Balance of all active accounts
+function getTotalBalance(accounts) {
+    return accounts.reduce((totalBalance, account) => {
+        if (account.isActive()) {
+            return totalBalance + account.Balance;
+        }
+        return totalBalance;
+    }, 0);
+}
+
+// Example: creating multiple BankAccount objects
+const ac1 = new BankAccount(5790114, 'Ranjan Kumar', 'Saving', 3550);
+const ac2 = new BankAccount(5790116, 'Mukesh', 'Current', 3500050);
+const ac3 = new BankAccount(5790118, 'Muskan', 'Saving', 90040);
+
+// performing Deposit, Withdrawal, and Balance check Operation
+ac1.deposit(5000);
+ac2.withdrawal(255500);
+ac3.checkBalance();
+
+// performing isActive Method
+console.log(`account is active: ${ac1.isActive()}`);
+console.log(`account is active: ${ac2.isActive()}`);
+console.log(`account is active: ${ac3.isActive()}`);
+
+// Testing getTotalBalance function
+const accounts = [ac1, ac2, ac3];
+const totalBalance = getTotalBalance(accounts);
+console.log(`Total balance of all active accounts: $${totalBalance}`);
